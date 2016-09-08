@@ -419,7 +419,7 @@ $(document).ready(function() {
   $('#dlgraph').click(function() {
     function downloadInnerHtml(filename, elId, mimeType) {
       //var elHtml = document.getElementById(elId).innerHTML;
-      var elHtml = JSON.stringify(graph.toJSON(), null, '\t');
+      var elHtml = JSON.stringify(graph.toJSON());
       var link = document.createElement('a');
       mimeType = mimeType || 'text/plain';
       link.setAttribute('download', filename);
@@ -428,12 +428,6 @@ $(document).ready(function() {
     }
     var fileName =  'graph.json'; // You can use the .txt extension if you want
     downloadInnerHtml(fileName, 'invisible','application/json');
-                    //If you don't want the link to actually
-                    // redirect the browser to another page, then
-                    // return false at the end of this block.
-                    // Note that this also prevents event bubbling,
-                    // which is probably what we want here, but won't
-                    // always be the case.
     return false;
   });
 
@@ -449,13 +443,19 @@ $(document).ready(function() {
     }
     var fileName =  'occopus.yaml'; // You can use the .txt extension if you want
     downloadInnerHtml(fileName, 'invisible','application/x-yaml');
-                    //If you don't want the link to actually
-                    // redirect the browser to another page, then
-                    // return false at the end of this block.
-                    // Note that this also prevents event bubbling,
-                    // which is probably what we want here, but won't
-                    // always be the case.
     return false;
+  });
+
+  $('#fileinput').change(function() {
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = (function(theFile) {
+        return function(e) {
+          console.log(e);
+          graph.fromJSON(JSON.parse(e.target.result));
+        };
+      })(file);
+    reader.readAsText(file);
   });
 
   $('#paperzoom').on('input change', function() {
