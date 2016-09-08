@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="css/joint.css" />
+  <link rel="stylesheet" type="text/css" href="css/devs.css" />
+  <link rel="stylesheet" type="text/css" href="css/jobflow-editor.css" />
+  <script src="js/jquery.min.js"></script>
+  <script src="js/lodash.min.js"></script>
+  <script src="js/backbone-min.js"></script>
+  <script src="js/js-yaml.js"></script>
+  <script type="text/javascript" src="js/joint.js"></script>
+  <script type="text/javascript" src="js/joint.shapes.devs.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/devs.js"></script>
+</head>
+<body>
+  <div id="org" class="content-container">
+    <h1>Jobflow graph editor</h1>
+    <p>To add a new job, simply click on a blank area of the canvas below.</p>
+    <div id="paper" class="paper" style="border:1px solid grey;width:800px;height:400px;overflow: scroll;"/>
+  </div>
+  <button id="wfpropbutton">Workflow properties</button>
+  <button id="deljobbutton">Delete job</button>
+  <button id="addinportbutton">Add new input port</button>
+  <button id="addoutportbutton">Add new output port</button>
+  <button id="delportbutton">Delete port</button>
+  <button id="dumpgraphbutton">Dump Graph</button>
+  <button id="loadgraphbutton">Load Graph</button>
+  <button id="dumpoccopus">Dump Occopus description</button>
+  <button id="dlgraph">Download graph</button>
+  <button id="dloccopus">Download Occopus description</button>
+  <div id="invisible" style="display:none;"></div>
+  <br/>
+  Zoom: <input type="range" id="paperzoom" min="1" max="100" value="100">
+
+  <div class="dialog" id="jobpropdialog" title="Job properties">
+   <form>
+      <label for="jobname">Name</label>
+      <input type="text" name="jobname" id="jobname" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="exename">Executable name</label>
+      <input type="text" name="exename" id="exename" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="args">Command line arguments</label>
+      <input type="text" name="args" id="args" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="executabletgz">Executable TGZ URL</label>
+      <input type="text" name="executabletgz" id="executabletgz" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <!--
+      <button type='button' id='browseexe'>Browse</button>
+      -->
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+      <label for="scalingmin">Scaling minimum nodes</label>
+      <input type="number" name="scalingmin" id="scalingmin" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="scalingmax">Scaling maximum nodes</label>
+      <input type="number" name="scalingmax" id="scalingmax" value="" class="text ui-widget-content ui-corner-all"><br/>
+    </form>
+  </div>
+  <div class="dialog" id="inportpropdialog" title="Port properties">
+   <form>
+      <label for="inportname">Name</label>
+      <input type="text" name="name" id="inportname" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="input_coll">Collector</label>
+      <input type="checkbox" name="input_coll" value="input_coll" id="input_coll"/>
+      <label for="coll_filter">Store using pattern</label>
+      <input type="text" name="portfile" id="coll_filter" value="" class="text ui-widget-content ui-corner-all" disabled><br/>
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </form>
+  </div>
+  <div class="dialog" id="outportpropdialog" title="Port properties">
+   <form>
+      <label for="outportname">Name</label>
+      <input type="text" name="name" id="outportname" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="targetip">Target IP</label>
+      <input type="text" name="targetip" id="targetip" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="targetport">Target port</label>
+      <input type="text" name="targetport" id="targetport" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label><input type="checkbox" name="output_gen" value="output_gen" id="output_gen"/>Generator port</label>
+      <label for="generator_regexp">Filter regexp</label>
+      <input type="text" name="portfile" id="generator_regexp" value="" class="text ui-widget-content ui-corner-all" disabled><br/>
+      <label for="distribution">Distribution</label>
+      <select id="distribution" disabled>
+          <option value="random">random</option>
+          <option value="round">round-robin</option>
+      </select>
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </form>
+  </div>
+  <div class="dialog" id="workflowpropdialog" title="Generic properties">
+    <form>
+      <label for="infraid">Infrastructure ID</label>
+      <input type="text" name="infraid" id="infraid" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="userid">User ID</label>
+      <input type="text" name="userid" id="userid" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="wfname">Name</label>
+      <input type="text" name="wfname" id="wfname" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="collip">Collector IP</label>
+      <input type="text" name="collip" id="collip" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="collport">Collector port</label>
+      <input type="text" name="collport" id="collport" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <label for="recvport">Receiver port</label>
+      <input type="text" name="recvport" id="recvport" value="" class="text ui-widget-content ui-corner-all"><br/>
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </form>
+  </div>
+</body>
+</html>
