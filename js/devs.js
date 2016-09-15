@@ -19,8 +19,8 @@ $(document).ready(function() {
 
   var paper = new joint.dia.Paper({
     el: $('#paper'),
-    width: 800,
-    height: 600,
+    width: $('#paper').width(),
+    height: $('#paper').height(),
     gridSize: 5,
     model: graph,
     //snapLinks: true,
