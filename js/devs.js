@@ -636,7 +636,7 @@ $(document).ready(function() {
       nodes: nodeList,
       dependencies: finaldeps
     };
-    return jsyaml.dump(occopusjson);
+    return jsyaml.dump(occopusjson, {lineWidth: -1});
   };
 
   $('#dumpoccopus').click(function() {
