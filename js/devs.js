@@ -515,6 +515,7 @@ $(document).ready(function() {
       var name = cell.attr('.label/text');
       var args = cell.attr('.args/text');
       var exetgz = cell.attr('.exetgz/text');
+      var exename = cell.attr('.exename/text');
       var scalingmin = cell.attr('.scaling/min');
       var scalingmax = cell.attr('.scaling/max');
       scalingmin = (scalingmin == null) ? 1 : scalingmin;
@@ -530,7 +531,7 @@ $(document).ready(function() {
           jobflow: {
             app: {
               exe: {
-                filename: name,
+                filename: exename,
                 tgzurl: exetgz
               },
               args: args
