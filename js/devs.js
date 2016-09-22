@@ -612,6 +612,15 @@ $(document).ready(function() {
         nodes[scellname]['variables']['jobflow']['app']['out'][j] = outpref;
       }
     }
+    var nodeList = [];
+    var idx = 0;
+    for (var i = 0; i < cells.length; i++) {
+      var cell = cells[i];
+      if (cell.get('type') == 'link')
+        continue;
+      var name = cell.attr('.label/text');
+      nodeList[idx++] = nodes[name];
+    }
     var finaldeps = []
     for (let sname of depset) {
       var depset = dependencies[sname];
@@ -623,7 +632,7 @@ $(document).ready(function() {
       infra_id: '',
       user_id: '',
       name: '',
-      nodes: nodes,
+      nodes: nodeList,
       dependencies: finaldeps
     };
     return jsyaml.dump(occopusjson);
