@@ -212,6 +212,18 @@ $(document).ready(function() {
     modal: true,
     buttons: {
       'Update workflow properties': function() {
+        var infra_id = $('#infra_id').val();
+        var user_id = $('#user_id').val();
+        var wf_name = $('#wf_name').val();
+        var coll_ip = $('#coll_ip').val();
+        var coll_port = $('#coll_port').val();
+        var recv_port = $('#recv_port').val();
+        graph.set('infra_id', infra_id);
+        graph.set('user_id', user_id);
+        graph.set('wf_name', wf_name);
+        graph.set('coll_ip', coll_ip);
+        graph.set('coll_port', coll_port);
+        graph.set('recv_port', recv_port);
         workflowpropdialog.dialog('close');
       },
       Cancel: function() {
@@ -405,6 +417,12 @@ $(document).ready(function() {
 
   $("#wfpropbutton").click(function() {
     workflowpropdialog.dialog('open');
+    $('#infra_id').val(graph.get('infra_id'));
+    $('#user_id').val(graph.get('user_id'));
+    $('#wf_name').val(graph.get('wf_name'));
+    $('#coll_ip').val(graph.get('coll_ip'));
+    $('#coll_port').val(graph.get('coll_port'));
+    $('#recv_port').val(graph.get('recv_port'));
   });
 
   $("#dumpgraphbutton").click(function() {
@@ -630,9 +648,16 @@ $(document).ready(function() {
       }
     }
     occopusjson = {
-      infra_id: '',
-      user_id: '',
-      name: '',
+      infra_id: graph.get('infra_id'),
+      user_id: graph.get('user_id'),
+      name: graph.get('wf_name'),
+      variables: {
+        jobflow_global: {
+          collector_ip: '&collectorip ' + graph.get('coll_ip'),
+          collector_port: "&collectorport " + graph.get('coll_port'),
+          receiver_port: '&receiver_port ' + graph.get('recv_port')
+        }
+      },
       nodes: nodeList,
       dependencies: finaldeps
     };
