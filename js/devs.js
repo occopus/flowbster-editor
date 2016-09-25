@@ -164,6 +164,7 @@ $(document).ready(function() {
         var oldName = selectedPort;
         var output_gen = $('#output_gen').is(':checked');
         var generator_regexp = $('#generator_regexp').val();
+        var targetname = $('#targetname').val();
         var targetip = $('#targetip').val();
         var targetport = $('#targetport').val();
         var distribution = $('#distribution').val();
@@ -171,6 +172,7 @@ $(document).ready(function() {
         var portprops = {
           'output_gen': output_gen,
           'generator_regexp': generator_regexp,
+          'targetname': targetname,
           'targetip': targetip,
           'targetport': targetport,
           'distribution': distribution
@@ -352,12 +354,14 @@ $(document).ready(function() {
         inportpropdialog.dialog('open');
       } else {
         $('#outportname').val(portName);
+        var targetname = '';
         var targetip = '';
         var targetport = '';
         var output_gen = false;
         var generator_regexp = '';
         var distribution = 'random';
         if (undefined != cell.model.get('outPortsProps')[portName]) {
+          targetname = cell.model.get('outPortsProps')[portName]['targetname'];
           targetip = cell.model.get('outPortsProps')[portName]['targetip'];
           targetport = cell.model.get('outPortsProps')[portName]['targetport'];
           output_gen = cell.model.get('outPortsProps')[portName]['output_gen'];
@@ -365,6 +369,7 @@ $(document).ready(function() {
           distribution = cell.model.get('outPortsProps')[portName]['distribution'];
         };
         $('#output_gen').prop('checked', output_gen);
+        $('#targetname').val(targetname);
         $('#targetip').val(targetip);
         $('#targetport').val(targetport);
         $('#generator_regexp').val(generator_regexp);
@@ -427,11 +432,6 @@ $(document).ready(function() {
 
   $("#dumpgraphbutton").click(function() {
     console.log('Graph\'s JSON is:\n' + JSON.stringify(graph.toJSON(), null, '\t'));
-  });
-
-  $('#loadgraphbutton').click(function() {
-    //graph.fromJSON(JSON.parse('{	"cells": [		{			"type": "devs.Model",			"size": {				"width": 100,				"height": 100			},			"inPorts": [				"inPorts0",				"foobar"			],			"outPorts": [				"outPorts0"			],			"position": {				"x": 130,				"y": 125			},			"angle": 0,			"inPortsProps": {				"inPorts0": {					"input_coll": false,					"coll_filter": "1"				},				"foobar": {					"input_coll": true,					"coll_filter": "2"				}			},			"outPortsProps": {				"outPorts0": {					"output_gen": true,					"generator_regexp": "dwwdw",					"targetip": "http://foo.bar",					"targetport": "111",					"distribution": "round"				}			},			"id": "99a6fd95-ed71-40f7-bbaa-780653997280",			"z": 1,			"attrs": {				".label": {					"text": "1"				},				".exename": {					"text": ""				},				".args": {					"text": ""				},				".exetgz": {					"text": ""				},				".scaling": {					"min": null,					"max": null				},				"rect": {					"fill": "green",					"stroke": "red",					"stroke-width": "5px"				},				".inPorts circle": {					"fill": "#16A085",					"magnet": "passive",					"type": "input"				},				".outPorts circle": {					"fill": "#E74C3C",					"type": "output"				},				".inPorts>.port0>.port-label": {					"text": "inPorts0"				},				".inPorts>.port0>.port-body": {					"port": {						"id": "inPorts0",						"type": "in"					}				},				".inPorts>.port0": {					"ref": ".body",					"ref-y": 0.25				},				".inPorts>.port1>.port-label": {					"text": "foobar"				},				".inPorts>.port1>.port-body": {					"port": {						"id": "foobar",						"type": "in"					}				},				".inPorts>.port1": {					"ref": ".body",					"ref-y": 0.75				},				".outPorts>.port0>.port-label": {					"text": "outPorts0"				},				".outPorts>.port0>.port-body": {					"port": {						"id": "outPorts0",						"type": "out"					}				},				".outPorts>.port0": {					"ref": ".body",					"ref-y": 0.5,					"ref-dx": 0				}			}		},		{			"type": "devs.Model",			"size": {				"width": 100,				"height": 100			},			"inPorts": [				"inPorts1"			],			"outPorts": [				"outPorts0"			],			"position": {				"x": 440,				"y": 125			},			"angle": 0,			"inPortsProps": {				"inPorts1": {					"input_coll": false,					"coll_filter": ""				}			},			"outPortsProps": {},			"id": "b465a539-7b2b-4bd3-9274-ff705250563f",			"z": 2,			"attrs": {				".label": {					"text": "2"				},				".exename": {					"text": ""				},				".args": {					"text": ""				},				".exetgz": {					"text": ""				},				".scaling": {					"min": null,					"max": null				},				"rect": {					"fill": "green",					"stroke": "black",					"stroke-width": "1px"				},				".inPorts circle": {					"fill": "#16A085",					"magnet": "passive",					"type": "input"				},				".outPorts circle": {					"fill": "#E74C3C",					"type": "output"				},				".inPorts>.port0>.port-label": {					"text": "inPorts1"				},				".inPorts>.port0>.port-body": {					"port": {						"id": "inPorts1",						"type": "in"					}				},				".inPorts>.port0": {					"ref": ".body",					"ref-y": 0.5				},				".outPorts>.port0>.port-label": {					"text": "outPorts0"				},				".outPorts>.port0>.port-body": {					"port": {						"id": "outPorts0",						"type": "out"					}				},				".outPorts>.port0": {					"ref": ".body",					"ref-y": 0.5,					"ref-dx": 0				}			}		},		{			"type": "link",			"source": {				"id": "99a6fd95-ed71-40f7-bbaa-780653997280",				"selector": "g:nth-child(1) > g:nth-child(4) > g:nth-child(1) > circle:nth-child(1)",				"port": "outPorts0"			},			"target": {				"id": "b465a539-7b2b-4bd3-9274-ff705250563f",				"port": "inPorts1",				"selector": "g:nth-child(1) > g:nth-child(3) > g:nth-child(1) > circle:nth-child(1)"			},			"id": "9a30123e-2236-434f-925f-95d146bfd0c9",			"embeds": "",			"z": 3,			"vertices": [],			"attrs": {				".marker-target": {					"d": "M 10 0 L 0 5 L 10 10 z"				},				"rect": {					"stroke": "black",					"stroke-width": "1px"				}			}		}	]}'));
-    graph.fromJSON(JSON.parse('{"cells":[{"type":"devs.Model","size":{"width":100,"height":100},"inPorts":["input-ligands.zip","vina-config.txt","input-receptor.pdbqt"],"outPorts":["output.zip","config.txt","receptor.pdbqt"],"position":{"x":100,"y":80},"angle":0,"inPortsProps":{"input-ligands.zip":{"input_coll":false,"coll_filter":""},"vina-config.txt":{"input_coll":false,"coll_filter":""},"input-receptor.pdbqt":{"input_coll":false,"coll_filter":""}},"outPortsProps":{"output.zip":{"output_gen":true,"generator_regexp":"output.zip*","targetip":"","targetport":"","distribution":"random"},"config.txt":{"output_gen":false,"generator_regexp":"","targetip":"","targetport":"","distribution":null},"receptor.pdbqt":{"output_gen":false,"generator_regexp":"","targetip":"","targetport":"","distribution":null}},"id":"7103b0d9-3306-4311-bcf0-248835ac3f67","z":1,"attrs":{".label":{"text":"Generator"},".exename":{"text":"execute.bin"},".args":{"text":"20"},".exetgz":{"text":"https://www.dropbox.com/s/2l3pkmxfb8k6wsc/generator_exe.tgz?dl=1"},".scaling":{"min":1,"max":1},"rect":{"fill":"green","stroke":"black","stroke-width":"1px"},".inPorts circle":{"fill":"#16A085","magnet":"passive","type":"input"},".outPorts circle":{"fill":"#E74C3C","type":"output"},".inPorts>.port0>.port-label":{"text":"input-ligands.zip"},".inPorts>.port0>.port-body":{"port":{"id":"input-ligands.zip","type":"in"}},".inPorts>.port0":{"ref":".body","ref-y":0.16666666666666666},".inPorts>.port1>.port-label":{"text":"vina-config.txt"},".inPorts>.port1>.port-body":{"port":{"id":"vina-config.txt","type":"in"}},".inPorts>.port1":{"ref":".body","ref-y":0.5},".inPorts>.port2>.port-label":{"text":"input-receptor.pdbqt"},".inPorts>.port2>.port-body":{"port":{"id":"input-receptor.pdbqt","type":"in"}},".inPorts>.port2":{"ref":".body","ref-y":0.8333333333333333},".outPorts>.port0>.port-label":{"text":"output.zip"},".outPorts>.port0>.port-body":{"port":{"id":"output.zip","type":"out"}},".outPorts>.port0":{"ref":".body","ref-y":0.16666666666666666,"ref-dx":0},".outPorts>.port1>.port-label":{"text":"config.txt"},".outPorts>.port1>.port-body":{"port":{"id":"config.txt","type":"out"}},".outPorts>.port1":{"ref":".body","ref-y":0.5,"ref-dx":0},".outPorts>.port2>.port-label":{"text":"receptor.pdbqt"},".outPorts>.port2>.port-body":{"port":{"id":"receptor.pdbqt","type":"out"}},".outPorts>.port2":{"ref":".body","ref-y":0.8333333333333333,"ref-dx":0}}},{"type":"devs.Model","size":{"width":100,"height":100},"inPorts":["ligands.zip","config.txt","receptor.pdbqt"],"outPorts":["output.tar"],"position":{"x":460,"y":80},"angle":0,"inPortsProps":{"ligands.zip":{"input_coll":false,"coll_filter":""},"config.txt":{"input_coll":false,"coll_filter":""},"receptor.pdbqt":{"input_coll":false,"coll_filter":""}},"outPortsProps":{"output.tar":{"output_gen":false,"generator_regexp":"","targetip":"","targetport":"","distribution":null}},"id":"d44fb879-3469-4e77-9b31-ed88ab381e83","z":2,"attrs":{".label":{"text":"Vina"},".exename":{"text":"vina.run"},".args":{"text":""},".exetgz":{"text":"https://www.dropbox.com/s/d7xyrrkiej1xhw6/vina_exe.tgz?dl=1"},".scaling":{"min":5,"max":5},"rect":{"fill":"green","stroke":"black","stroke-width":"1px"},".inPorts circle":{"fill":"#16A085","magnet":"passive","type":"input"},".outPorts circle":{"fill":"#E74C3C","type":"output"},".inPorts>.port0>.port-label":{"text":"ligands.zip"},".inPorts>.port0>.port-body":{"port":{"id":"ligands.zip","type":"in"}},".inPorts>.port0":{"ref":".body","ref-y":0.16666666666666666},".inPorts>.port1>.port-label":{"text":"config.txt"},".inPorts>.port1>.port-body":{"port":{"id":"config.txt","type":"in"}},".inPorts>.port1":{"ref":".body","ref-y":0.5},".inPorts>.port2>.port-label":{"text":"receptor.pdbqt"},".inPorts>.port2>.port-body":{"port":{"id":"receptor.pdbqt","type":"in"}},".inPorts>.port2":{"ref":".body","ref-y":0.8333333333333333},".outPorts>.port0>.port-label":{"text":"output.tar"},".outPorts>.port0>.port-body":{"port":{"id":"output.tar","type":"out"}},".outPorts>.port0":{"ref":".body","ref-y":0.5,"ref-dx":0}}},{"type":"devs.Model","size":{"width":100,"height":100},"inPorts":["output.tar"],"outPorts":["best.pdbqt"],"position":{"x":755,"y":80},"angle":0,"inPortsProps":{"output.tar":{"input_coll":true,"coll_filter":"output.tar_%i"}},"outPortsProps":{"best.pdbqt":{"output_gen":false,"generator_regexp":"","targetip":"155.210.198.89","targetport":"5000","distribution":null}},"id":"007fa52d-9743-46d7-9f78-a37ec22465f5","z":3,"attrs":{".label":{"text":"Collector"},".exename":{"text":"execute.bin"},".args":{"text":"5"},".exetgz":{"text":"https://www.dropbox.com/s/rf9h5kppah2y4s5/collector_exe.tgz?dl=1"},".scaling":{"min":1,"max":1},"rect":{"fill":"green","stroke":"red","stroke-width":"5px"},".inPorts circle":{"fill":"#16A085","magnet":"passive","type":"input"},".outPorts circle":{"fill":"#E74C3C","type":"output"},".inPorts>.port0>.port-label":{"text":"output.tar"},".inPorts>.port0>.port-body":{"port":{"id":"output.tar","type":"in"}},".inPorts>.port0":{"ref":".body","ref-y":0.5},".outPorts>.port0>.port-label":{"text":"best.pdbqt"},".outPorts>.port0>.port-body":{"port":{"id":"best.pdbqt","type":"out"}},".outPorts>.port0":{"ref":".body","ref-y":0.5,"ref-dx":0}}},{"type":"link","source":{"id":"7103b0d9-3306-4311-bcf0-248835ac3f67","selector":"g:nth-child(1) > g:nth-child(4) > g:nth-child(1) > circle:nth-child(1)","port":"output.zip"},"target":{"id":"d44fb879-3469-4e77-9b31-ed88ab381e83","port":"ligands.zip","selector":"g:nth-child(1) > g:nth-child(3) > g:nth-child(1) > circle:nth-child(1)"},"id":"4b8ebdb9-0392-4980-8a22-63353fac7ee2","embeds":"","z":4,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z"}}},{"type":"link","source":{"id":"7103b0d9-3306-4311-bcf0-248835ac3f67","selector":"g:nth-child(1) > g:nth-child(4) > g:nth-child(2) > circle:nth-child(1)","port":"config.txt"},"target":{"id":"d44fb879-3469-4e77-9b31-ed88ab381e83","port":"config.txt","selector":"g:nth-child(1) > g:nth-child(3) > g:nth-child(2) > circle:nth-child(1)"},"id":"22086820-897b-4fb4-a85b-60b1518ace32","embeds":"","z":5,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z"}}},{"type":"link","source":{"id":"7103b0d9-3306-4311-bcf0-248835ac3f67","selector":"g:nth-child(1) > g:nth-child(4) > g:nth-child(3) > circle:nth-child(1)","port":"receptor.pdbqt"},"target":{"id":"d44fb879-3469-4e77-9b31-ed88ab381e83","port":"receptor.pdbqt","selector":"g:nth-child(1) > g:nth-child(3) > g:nth-child(3) > circle:nth-child(1)"},"id":"54b9836f-6e85-4789-8454-cc8824322060","embeds":"","z":6,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z"}}},{"type":"link","source":{"id":"d44fb879-3469-4e77-9b31-ed88ab381e83","selector":"g:nth-child(1) > g:nth-child(4) > g:nth-child(1) > circle:nth-child(1)","port":"output.tar"},"target":{"id":"007fa52d-9743-46d7-9f78-a37ec22465f5","port":"output.tar","selector":"g:nth-child(1) > g:nth-child(3) > g:nth-child(1) > circle:nth-child(1)"},"id":"1652996e-52b7-45af-b684-a95e2f7d0a72","embeds":"","z":7,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z"}}}]}'));
   });
 
   $('#dlgraph').click(function() {
@@ -588,12 +588,18 @@ $(document).ready(function() {
           if (outPortsProps[portName]) {
             var output_gen = outPortsProps[portName]['output_gen'];
             var generator_regexp = outPortsProps[portName]['generator_regexp'];
+            var targetname = outPortsProps[portName]['targetname'];
             var targetip = outPortsProps[portName]['targetip'];
+            if (targetip == undefined)
+              targetip = graph.get('coll_ip');
             var targetport = outPortsProps[portName]['targetport'];
+            if (targetport == undefined)
+              targetport = graph.get('coll_port');
             var distribution = outPortsProps[portName]['distribution'];
             if (output_gen) {
               portJSON['filter'] = generator_regexp;
             }
+            portJSON['targetname'] = targetname;
             portJSON['targetip'] = targetip;
             portJSON['targetport'] = targetport;
           }
@@ -624,6 +630,7 @@ $(document).ready(function() {
         var outpref = outprefs[j];
         if (outpref['name'] != sportname)
           continue;
+        delete outpref['targetname'];
         delete outpref['targetip'];
         delete outpref['targetport'];
         outpref['targetname'] = tportname;
@@ -654,7 +661,7 @@ $(document).ready(function() {
       variables: {
         jobflow_global: {
           collector_ip: '&collectorip ' + graph.get('coll_ip'),
-          collector_port: "&collectorport " + graph.get('coll_port'),
+          collector_port: '&collectorport ' + graph.get('coll_port'),
           receiver_port: '&receiver_port ' + graph.get('recv_port')
         }
       },
