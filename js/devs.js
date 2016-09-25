@@ -220,12 +220,14 @@ $(document).ready(function() {
         var coll_ip = $('#coll_ip').val();
         var coll_port = $('#coll_port').val();
         var recv_port = $('#recv_port').val();
+        var nodetypename = $('#nodetypename').val();
         graph.set('infra_id', infra_id);
         graph.set('user_id', user_id);
         graph.set('wf_name', wf_name);
         graph.set('coll_ip', coll_ip);
         graph.set('coll_port', coll_port);
         graph.set('recv_port', recv_port);
+        graph.set('nodetypename', nodetypename);
         workflowpropdialog.dialog('close');
       },
       Cancel: function() {
@@ -428,6 +430,7 @@ $(document).ready(function() {
     $('#coll_ip').val(graph.get('coll_ip'));
     $('#coll_port').val(graph.get('coll_port'));
     $('#recv_port').val(graph.get('recv_port'));
+    $('#nodetypename').val(graph.get('nodetypename'));
   });
 
   $("#dumpgraphbutton").click(function() {
@@ -540,7 +543,7 @@ $(document).ready(function() {
       scalingmax = (scalingmax == null) ? 1 : scalingmax;
       var celljson = {
         name: name,
-        type: "jobflow_node",
+        type: graph.get('nodetypename'),
         scaling: {
           min: scalingmin,
           max: scalingmax
