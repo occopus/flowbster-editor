@@ -25,6 +25,7 @@ $(document).ready(function() {
     model: graph,
     //snapLinks: true,
     //embeddingMode: false,
+    linkPinning: false,
     interactive: true,
     defaultLink: new joint.dia.Link({
       attrs: {
@@ -331,7 +332,44 @@ $(document).ready(function() {
     selectedCell = cell;
     selectedCell.model.attr('rect/stroke', 'red');
     selectedCell.model.attr('rect/stroke-width', '5px');
-  }
+  };
+
+  paper.on('cell:pointerup', function(cell, eventName, x, y) {
+    var portName = eventName.target.getAttribute('port');
+    if (portName != null) {
+      selectedPort = portName;
+      selectedPortType = eventName.target.getAttribute('type');
+      var jobname = cell.sourceView.model.attr('.label/text');
+      selectCell(cell.sourceView);
+      console.log('About to define data for ' + selectedPortType + ' port \'' + portName + '\' for job ' + jobname);
+      if ("input" != selectedPortType) {
+        $('#outportname').val(portName);
+        var targetname = '';
+        var targetip = '';
+        var targetport = '';
+        var output_gen = false;
+        var generator_regexp = '';
+        var distribution = 'random';
+        if (undefined != cell.sourceView.model.get('outPortsProps')[portName]) {
+          targetname = cell.sourceView.model.get('outPortsProps')[portName]['targetname'];
+          targetip = cell.sourceView.model.get('outPortsProps')[portName]['targetip'];
+          targetport = cell.sourceView.model.get('outPortsProps')[portName]['targetport'];
+          output_gen = cell.sourceView.model.get('outPortsProps')[portName]['output_gen'];
+          generator_regexp = cell.sourceView.model.get('outPortsProps')[portName]['generator_regexp'];
+          distribution = cell.sourceView.model.get('outPortsProps')[portName]['distribution'];
+        };
+        $('#output_gen').prop('checked', output_gen);
+        $('#targetname').val(targetname);
+        $('#targetip').val(targetip);
+        $('#targetport').val(targetport);
+        $('#generator_regexp').val(generator_regexp);
+        $('#distribution').val(distribution);
+        $('#generator_regexp').prop('disabled', !output_gen);
+        $('#distribution').prop('disabled', !output_gen);
+        outportpropdialog.dialog('open');
+      }
+    };
+  });
 
   paper.on('cell:pointerclick', function(cell, eventName, x, y) {
     selectCell(cell);
