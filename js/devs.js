@@ -1,15 +1,15 @@
-Array.prototype.remove = function() {
-    var what, a = arguments, L = a.length, ax;
-    while (L && this.length) {
-        what = a[--L];
-        while ((ax = this.indexOf(what)) !== -1) {
-            this.splice(ax, 1);
-        }
+Array.prototype.remove = function () {
+  var what, a = arguments, L = a.length, ax;
+  while (L && this.length) {
+    what = a[--L];
+    while ((ax = this.indexOf(what)) !== -1) {
+      this.splice(ax, 1);
     }
-    return this;
+  }
+  return this;
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
 
   var selectedCell;
   var selectedPort;
@@ -32,10 +32,10 @@ $(document).ready(function() {
         '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' }
       }
     }),
-    validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+    validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
       if (magnetS && magnetS.getAttribute('type') === 'input')
-       return false;
-     if (cellViewS === cellViewT)
+        return false;
+      if (cellViewS === cellViewT)
         return false;
       return magnetT && magnetT.getAttribute('type') === 'input';
     }
@@ -58,7 +58,7 @@ $(document).ready(function() {
     y: 0,
     cell: null,
     buttons: {
-      'Set job properties': function() {
+      'Set job properties': function () {
         var name = $('#jobname').val();
         var exename = $('#exename').val();
         var args = $('#args').val();
@@ -78,18 +78,18 @@ $(document).ready(function() {
           }
           var rect = new joint.shapes.devs.Model({
             position: { x: jobpropdialog.x, y: jobpropdialog.y },
-            size: {width: 100, height: 100},
+            size: { width: 100, height: 100 },
             inPorts: [],
             inPortsProps: {},
             outPorts: [],
             outPortsProps: {},
             attrs: {
               '.label': { text: name },
-              '.exename' : { text: exename },
-              '.args' : { text: args },
-              '.exetgz' : { text: exetgz },
-              '.scaling' : { min: scalingmin, max: scalingmax },
-              rect: {fill: 'green' },
+              '.exename': { text: exename },
+              '.args': { text: args },
+              '.exetgz': { text: exetgz },
+              '.scaling': { min: scalingmin, max: scalingmax },
+              rect: { fill: 'green' },
               '.inPorts circle': { fill: '#16A085', magnet: 'passive', type: 'input' },
               '.outPorts circle': { fill: '#E74C3C', type: 'output' }
             }
@@ -105,7 +105,7 @@ $(document).ready(function() {
         }
         jobpropdialog.dialog('close');
       },
-      Cancel: function() {
+      Cancel: function () {
         jobpropdialog.dialog('close');
       }
     },
@@ -116,7 +116,7 @@ $(document).ready(function() {
     width: 350,
     modal: true,
     buttons: {
-      'Update port properties': function() {
+      'Update port properties': function () {
         var oldName = selectedPort;
         var input_coll = $('#input_coll').is(':checked');
         var coll_filter = $('#coll_filter').val();
@@ -150,7 +150,7 @@ $(document).ready(function() {
         selectedCell.model.set('inPortsProps', inPortsProps);
         inportpropdialog.dialog('close');
       },
-      Cancel: function() {
+      Cancel: function () {
         inportpropdialog.dialog('close');
       }
     },
@@ -161,7 +161,7 @@ $(document).ready(function() {
     width: 350,
     modal: true,
     buttons: {
-      'Update port properties': function() {
+      'Update port properties': function () {
         var oldName = selectedPort;
         var output_gen = $('#output_gen').is(':checked');
         var generator_regexp = $('#generator_regexp').val();
@@ -169,6 +169,7 @@ $(document).ready(function() {
         var targetip = $('#targetip').val();
         var targetport = $('#targetport').val();
         var distribution = $('#distribution').val();
+        var flowbsterName = $('#flowbsterName').val();
         var outPortsProps = selectedCell.model.get('outPortsProps');
         var portprops = {
           'output_gen': output_gen,
@@ -176,7 +177,8 @@ $(document).ready(function() {
           'targetname': targetname,
           'targetip': targetip,
           'targetport': targetport,
-          'distribution': distribution
+          'distribution': distribution,
+          'flowbsterName': flowbsterName
         };
         var newName = $('#outportname').val();
         if (oldName != newName) {
@@ -203,7 +205,7 @@ $(document).ready(function() {
         selectedCell.model.set('outPortsProps', outPortsProps);
         outportpropdialog.dialog('close');
       },
-      Cancel: function() {
+      Cancel: function () {
         outportpropdialog.dialog('close');
       }
     },
@@ -214,7 +216,7 @@ $(document).ready(function() {
     width: 350,
     modal: true,
     buttons: {
-      'Update workflow properties': function() {
+      'Update workflow properties': function () {
         var infra_id = $('#infra_id').val();
         var user_id = $('#user_id').val();
         var wf_name = $('#wf_name').val();
@@ -231,13 +233,13 @@ $(document).ready(function() {
         graph.set('nodetypename', nodetypename);
         workflowpropdialog.dialog('close');
       },
-      Cancel: function() {
+      Cancel: function () {
         workflowpropdialog.dialog('close');
       }
     },
   });
 
-  $('#jobname').on('input change', function() {
+  $('#jobname').on('input change', function () {
     updateJobPropButton();
   });
 
@@ -300,7 +302,7 @@ $(document).ready(function() {
   }
 
   paper.off('cell:highlight cell:unhighlight').on({
-    'cell:highlight': function(cellView, el, opt) {
+    'cell:highlight': function (cellView, el, opt) {
       if (opt.embedding) {
         V(el).addClass('highlighted-parent');
       }
@@ -310,7 +312,7 @@ $(document).ready(function() {
         V(paper.viewport).append(highlighter);
       }
     },
-    'cell:unhighlight': function(cellView, el, opt) {
+    'cell:unhighlight': function (cellView, el, opt) {
       if (opt.embedding) {
         V(el).removeClass('highlighted-parent');
       }
@@ -320,28 +322,44 @@ $(document).ready(function() {
     }
   });
 
-  paper.on('all', function(eventName, cell) {
+  paper.on('all', function (eventName, cell) {
     console.log(arguments);
   });
 
-  var selectCell = function(cell) {
-    if (selectedCell != null) {
-      selectedCell.model.attr('rect/stroke', 'black');
-      selectedCell.model.attr('rect/stroke-width', '1px');
+  var selectCell = function (cell) {
+    if (cell != null) {
+      if (selectedCell != null) {
+        selectedCell.model.attr('rect/stroke', 'black');
+        selectedCell.model.attr('rect/stroke-width', '1px');
+      }
+      //mark
+      if (cell.model != undefined) {
+        selectedCell = cell;
+        selectedCell.model.attr('rect/stroke', 'red');
+        selectedCell.model.attr('rect/stroke-width', '5px');
+      }
+    } else {
+      console.log('What happened');
     }
-    selectedCell = cell;
-    selectedCell.model.attr('rect/stroke', 'red');
-    selectedCell.model.attr('rect/stroke-width', '5px');
+
   };
 
-  paper.on('cell:pointerup', function(cell, eventName, x, y) {
+  paper.on('cell:pointerup', function (cell, eventName, x, y) {
+    console.log(cell);
+    console.log(eventName);
     var portName = eventName.target.getAttribute('port');
     if (portName != null) {
       selectedPort = portName;
       selectedPortType = eventName.target.getAttribute('type');
-      var jobname = cell.sourceView.model.attr('.label/text');
-      selectCell(cell.sourceView);
-      console.log('About to define data for ' + selectedPortType + ' port \'' + portName + '\' for job ' + jobname);
+      if (cell.sourceView != null) {
+        var jobname = cell.sourceView.model.attr('.label/text');
+        selectCell(cell.sourceView);
+        console.log('About to define data for ' + selectedPortType + ' port \'' + portName + '\' for job ' + jobname);
+      } else {
+        console.log('CELL INFOO');
+        console.log(cell);
+      }
+
       if ("input" != selectedPortType) {
         $('#outportname').val(portName);
         var targetname = '';
@@ -350,6 +368,7 @@ $(document).ready(function() {
         var output_gen = false;
         var generator_regexp = '';
         var distribution = 'random';
+        var flowbsterName = '';
         if (undefined != cell.sourceView.model.get('outPortsProps')[portName]) {
           targetname = cell.sourceView.model.get('outPortsProps')[portName]['targetname'];
           targetip = cell.sourceView.model.get('outPortsProps')[portName]['targetip'];
@@ -357,6 +376,7 @@ $(document).ready(function() {
           output_gen = cell.sourceView.model.get('outPortsProps')[portName]['output_gen'];
           generator_regexp = cell.sourceView.model.get('outPortsProps')[portName]['generator_regexp'];
           distribution = cell.sourceView.model.get('outPortsProps')[portName]['distribution'];
+          flowbsterName = cell.sourceView.model.get('outPortsProps')[portName]['flowbsterName'];
         };
         $('#output_gen').prop('checked', output_gen);
         $('#targetname').val(targetname);
@@ -366,12 +386,13 @@ $(document).ready(function() {
         $('#distribution').val(distribution);
         $('#generator_regexp').prop('disabled', !output_gen);
         $('#distribution').prop('disabled', !output_gen);
+        $('#flowbsterName').val(flowbsterName);
         outportpropdialog.dialog('open');
       }
     };
   });
 
-  paper.on('cell:pointerclick', function(cell, eventName, x, y) {
+  paper.on('cell:pointerclick', function (cell, eventName, x, y) {
     selectCell(cell);
     var portName = eventName.target.getAttribute('port');
     if (portName != null) {
@@ -422,7 +443,7 @@ $(document).ready(function() {
     }
   });
 
-  paper.on('cell:pointerdblclick', function(cell, eventName, x, y) {
+  paper.on('cell:pointerdblclick', function (cell, eventName, x, y) {
     selectCell(cell);
     jobpropdialog.cell = cell;
     $('#jobname').val(getSelectedJobsName());
@@ -435,24 +456,24 @@ $(document).ready(function() {
     jobpropdialog.dialog('open');
   });
 
-  paper.on('blank:pointerclick', function(eventName, x, y) {
+  paper.on('blank:pointerclick', function (eventName, x, y) {
     addJob(x, y);
   });
 
-  $("#deljobbutton").click(function() {
+  $("#deljobbutton").click(function () {
     selectedCell.model.remove();
     selectedCell = null;
   });
 
-  $("#addinportbutton").click(function() {
+  $("#addinportbutton").click(function () {
     addPort('inPorts');
   });
 
-  $("#addoutportbutton").click(function() {
+  $("#addoutportbutton").click(function () {
     addPort('outPorts');
   });
 
-  $("#delportbutton").click(function() {
+  $("#delportbutton").click(function () {
     var type = (selectedPortType == 'output' ? 'outPorts' : 'inPorts');
     var ports = selectedCell.model.get(type);
     ports.remove(selectedPort);
@@ -460,7 +481,7 @@ $(document).ready(function() {
     selectedCell.model.trigger('change:' + type);
   });
 
-  $("#wfpropbutton").click(function() {
+  $("#wfpropbutton").click(function () {
     workflowpropdialog.dialog('open');
     $('#infra_id').val(graph.get('infra_id'));
     $('#user_id').val(graph.get('user_id'));
@@ -471,67 +492,67 @@ $(document).ready(function() {
     $('#nodetypename').val(graph.get('nodetypename'));
   });
 
-  $("#dumpgraphbutton").click(function() {
+  $("#dumpgraphbutton").click(function () {
     console.log('Graph\'s JSON is:\n' + JSON.stringify(graph.toJSON(), null, '\t'));
   });
 
-  $('#dlgraph').click(function() {
+  $('#dlgraph').click(function () {
     function downloadInnerHtml(filename, elId, mimeType) {
       //var elHtml = document.getElementById(elId).innerHTML;
       var elHtml = JSON.stringify(graph.toJSON());
       var link = document.createElement('a');
       mimeType = mimeType || 'text/plain';
       link.setAttribute('download', filename);
-      link.setAttribute('href', 'data:' + mimeType  +  ';charset=utf-8,' + encodeURIComponent(elHtml));
+      link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
       link.click();
     }
-    var fileName =  'graph.json'; // You can use the .txt extension if you want
-    downloadInnerHtml(fileName, 'invisible','application/json');
+    var fileName = 'graph.json'; // You can use the .txt extension if you want
+    downloadInnerHtml(fileName, 'invisible', 'application/json');
     return false;
   });
 
-  $('#dloccopus').click(function() {
+  $('#dloccopus').click(function () {
     function downloadInnerHtml(filename, elId, mimeType) {
       //var elHtml = document.getElementById(elId).innerHTML;
       var elHtml = dumpoccopus();
       var link = document.createElement('a');
       mimeType = mimeType || 'text/plain';
       link.setAttribute('download', filename);
-      link.setAttribute('href', 'data:' + mimeType  +  ';charset=utf-8,' + encodeURIComponent(elHtml));
+      link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
       link.click();
     }
-    var fileName =  'occopus.yaml'; // You can use the .txt extension if you want
-    downloadInnerHtml(fileName, 'invisible','application/x-yaml');
+    var fileName = 'occopus.yaml'; // You can use the .txt extension if you want
+    downloadInnerHtml(fileName, 'invisible', 'application/x-yaml');
     return false;
   });
 
-  $('#fileinput').change(function() {
+  $('#fileinput').change(function () {
     var file = this.files[0];
     var reader = new FileReader();
-    reader.onload = (function(theFile) {
-        return function(e) {
-          console.log(e);
-          graph.fromJSON(JSON.parse(e.target.result));
-        };
-      })(file);
+    reader.onload = (function (theFile) {
+      return function (e) {
+        console.log(e);
+        graph.fromJSON(JSON.parse(e.target.result));
+      };
+    })(file);
     reader.readAsText(file);
   });
 
-  $('#paperzoom').on('input change', function() {
+  $('#paperzoom').on('input change', function () {
     var newLevel = $('#paperzoom').val();
-    paper.scale(newLevel/100, newLevel/100);
+    paper.scale(newLevel / 100, newLevel / 100);
   });
 
-  $('#input_coll').click(function() {
+  $('#input_coll').click(function () {
     $('#coll_filter').prop('disabled', !($('#input_coll').is(':checked')));
   });
 
-  $('#output_gen').click(function() {
+  $('#output_gen').click(function () {
     $('#generator_regexp').prop('disabled', !($('#output_gen').is(':checked')));
     $('#distribution').prop('disabled', !($('#output_gen').is(':checked')));
   });
 
-  var addJob = function(x, y) {
+  var addJob = function (x, y) {
     jobpropdialog.x = x;
     jobpropdialog.y = y;
     jobpropdialog.cell = null;
@@ -545,13 +566,13 @@ $(document).ready(function() {
     jobpropdialog.dialog('open');
   };
 
-  var addPort = function(type) {
+  var addPort = function (type) {
     var ports = selectedCell.model.get(type);
     if (ports == null)
-      ports = [type+''];
+      ports = [type + ''];
     else
       ports.push(type + ports.length);
-    var name = ports[ports.length-1];
+    var name = ports[ports.length - 1];
     var propKey = (type == 'inPorts' ? 'inPortsProps' : 'outPortsProps');
     var portsProps = selectedCell.model.get(propKey);
     portsProps[name] = {};
@@ -587,13 +608,13 @@ $(document).ready(function() {
           max: scalingmax
         },
         variables: {
-          jobflow: {
+          flowbster: {
             app: {
               exe: {
                 filename: exename,
                 tgzurl: exetgz
               },
-              args: args
+              args: '\"' + args + '\"' // " " needed
             }
           }
         }
@@ -611,22 +632,22 @@ $(document).ready(function() {
           var coll_filter = inPortsProps[portName]['coll_filter'];
           if (input_coll) {
             portJSON['collector'] = true;
-            portJSON['format'] = coll_filter;
+            portJSON['format'] = '\\' + coll_filter + '\\'; // " " needed
           }
           inports[j] = portJSON;
         }
-        celljson['variables']['jobflow']['app']['in'] = inports;
+        celljson['variables']['flowbster']['app']['in'] = inports;
       }
       var outPorts = cell.get('outPorts');
+
       if (outPorts.length) {
         var outports = [];
         var outPortsProps = cell.get('outPortsProps');
         for (var j = 0; j < outPorts.length; j++) {
           var portName = outPorts[j];
-          var portJSON = {
-            name: portName
-          };
+          var portJSON = {};
           if (outPortsProps[portName]) {
+            var flowbsterName = outPortsProps[portName]['flowbsterName'];
             var output_gen = outPortsProps[portName]['output_gen'];
             var generator_regexp = outPortsProps[portName]['generator_regexp'];
             var targetname = outPortsProps[portName]['targetname'];
@@ -637,16 +658,21 @@ $(document).ready(function() {
             if (targetport == undefined)
               targetport = graph.get('coll_port');
             var distribution = outPortsProps[portName]['distribution'];
+            portJSON['name'] = flowbsterName;
             if (output_gen) {
-              portJSON['filter'] = generator_regexp;
+              portJSON['filter'] = '\\' + generator_regexp + '\\'; // " " needed
+              if (distribution)
+                portJSON['distribution'] = distribution; //distribution was missin'
             }
+
+            portJSON['displayName'] = portName;
             portJSON['targetname'] = targetname;
             portJSON['targetip'] = targetip;
             portJSON['targetport'] = targetport;
           }
           outports[j] = portJSON;
         }
-        celljson['variables']['jobflow']['app']['out'] = outports;
+        celljson['variables']['flowbster']['app']['out'] = outports;
       }
       nodes[name] = celljson;
     }
@@ -666,17 +692,19 @@ $(document).ready(function() {
       celldeps = dependencies[scellname];
       celldeps.add(tcellname);
       dependencies[scellname] = celldeps;
-      var outprefs = nodes[scellname]['variables']['jobflow']['app']['out'];
+      var outprefs = nodes[scellname]['variables']['flowbster']['app']['out'];
       for (var j = 0; j < outprefs.length; j++) {
         var outpref = outprefs[j];
-        if (outpref['name'] != sportname)
+        if (outpref['displayName'] != sportname) {
           continue;
+        }
         delete outpref['targetname'];
         delete outpref['targetip'];
         delete outpref['targetport'];
+        delete outpref['displayName'];
         outpref['targetname'] = tportname;
         outpref['targetnode'] = tcellname;
-        nodes[scellname]['variables']['jobflow']['app']['out'][j] = outpref;
+        nodes[scellname]['variables']['flowbster']['app']['out'][j] = outpref;
       }
     }
     var nodeList = [];
@@ -688,31 +716,79 @@ $(document).ready(function() {
       var name = cell.attr('.label/text');
       nodeList[idx++] = nodes[name];
     }
+
+    //delete displayName for those nodes which doesnt have a link
+    // and delete the targetIP targetPort if not specified
+    for (let node of nodeList) {
+      for (let outport of node['variables']['flowbster']['app']['out']) {
+        if (outport['displayName'])
+          delete outport['displayName'];
+        if (!outport['targetip'] && !outport['targetport']) {
+          delete outport['targetip'];
+          delete outport['targetport'];
+        }
+      }
+    }
+
     var finaldeps = []
     for (let sname of depset) {
       var depset = dependencies[sname];
       for (let item of depset) {
-        finaldeps.push('connection: [ *'+sname+', *'+item+' ]');
+        finaldeps.push('connection: [ *' + sname + ', *' + item + ' ]');
       }
     }
+
+    var collector_ip = '&collectorip ' + graph.get('coll_ip');
+    console.log(collector_ip);
+    var collector_port = '&collectorport ' + graph.get('coll_port');
+    console.log(collector_port);
+    var receiver_port = '&receiverport ' + graph.get('recv_port');
+    console.log(receiver_port);
+
     occopusjson = {
-      infra_id: graph.get('infra_id'),
       user_id: graph.get('user_id'),
-      name: graph.get('wf_name'),
+      infra_name: graph.get('wf_name'),
       variables: {
-        jobflow_global: {
-          collector_ip: '&collectorip ' + graph.get('coll_ip'),
-          collector_port: '&collectorport ' + graph.get('coll_port'),
-          receiver_port: '&receiver_port ' + graph.get('recv_port')
+        flowbster_global: {
+          collector_ip: collector_ip,
+          collector_port: collector_port,
+          receiver_port: receiver_port
         }
       },
       nodes: nodeList,
       dependencies: finaldeps
     };
-    return jsyaml.dump(occopusjson, {lineWidth: -1});
+
+    var names = [];
+    var subNames = [];
+    var index = 0;
+    for (let node of occopusjson.nodes) {
+      names[index] = node.name;
+      subNames[index] = 'name: ' + node.name;
+      index++;
+    }
+
+    // console.log(names);
+    // console.log(subNames);
+
+    var halfwayYaml = jsyaml.dump(occopusjson, { lineWidth: -1, noCompatMode: true });
+
+    for (i = 0; i < names.length; i++) {
+      var firstPart = halfwayYaml.slice(0, halfwayYaml.indexOf(subNames[i]));
+      halfwayYaml = firstPart + '&' + names[i] + '\n    ' + halfwayYaml.slice(halfwayYaml.indexOf(subNames[i]));
+    }
+
+    //console.log(halfwayYaml);
+    //console.log('--');
+
+    //replace sinle quotes globally to whitespace and " to single quotation marks
+    var doneYaml = halfwayYaml.replace(/'/g, ' ').replace(/"/g, '\'').replace(/\\/g, '\"');
+
+    //console.log(doneYaml);
+    return doneYaml;
   };
 
-  $('#dumpoccopus').click(function() {
+  $('#dumpoccopus').click(function () {
     console.log(dumpoccopus());
   });
 
